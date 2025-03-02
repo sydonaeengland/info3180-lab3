@@ -16,23 +16,29 @@ def home():
 @app.route('/about/')
 def about():
     """Render the website's about page."""
-    return render_template('about.html', name="Mary Jane")
+    return render_template('about.html', name="Sydonae England")
+
 
 @app.route('/contact', methods=["GET", "POST"])
 def contact():
     """Render the contact form and handle submissions."""
     form = ContactForm()
 
-    if form.validate_on_submit():
-        msg = Message(
-            subject=form.subject.data,
-            sender=(form.name.data, form.email.data),
-            recipients=["your-email@example.com"]  
-        )
-        msg.body = form.message.data
-        mail.send(msg)
-        flash("Your message has been sent successfully!", "success")
-        return redirect(url_for("contact"))
+    if request.method == "POST" and form.validate_on_submit():  
+        try:
+            msg = Message(
+                request.form['subject'], 
+                sender=(request.form['name'], request.form['email']), 
+                recipients=["to@example.com"]  
+            )
+            msg.body = request.form['message']  
+
+            mail.send(msg)  
+            flash("Your message has been sent successfully!", "success")
+        except Exception as e:
+            flash(f"Error sending email: {str(e)}", "danger")
+
+        return redirect(url_for("home"))  
 
     return render_template("contact.html", form=form)
 
