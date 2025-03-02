@@ -1,0 +1,59 @@
+{% extends "base.html" %} {% block main %}
+<div class="contact-form-container">
+  <h1 class="contact-form-title">Contact Form</h1>
+  <p class="contact-form-description">
+    Fill in this form to contact the site owners.
+  </p>
+
+  {% with messages = get_flashed_messages(with_categories=True) %} {% if
+  messages %}
+  <div class="contact-flash-message">
+    {% for category, message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %}
+
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="mb-3">
+      <label class="contact-form-label">{{ form.name.label }}</label>
+      <span class="contact-required">(Required)</span>
+      <br />
+      <small class="contact-help-text">Please enter your full name</small>
+      {{ form.name(class="contact-form-input") }}
+    </div>
+
+    <div class="mb-3">
+      <label class="contact-form-label">{{ form.email.label }}</label>
+      <span class="contact-required">(Required)</span>
+      <br />
+      <small class="contact-help-text">Please enter your e-mail address</small>
+      {{ form.email(class="contact-form-input") }}
+    </div>
+
+    <div class="mb-3">
+      <label class="contact-form-label">{{ form.subject.label }}</label>
+      <span class="contact-required">(Required)</span>
+      <br />
+      <small class="contact-help-text"
+        >Please enter the subject for your message.</small
+      >
+      {{ form.subject(class="contact-form-input") }}
+    </div>
+
+    <div class="mb-3">
+      <label class="contact-form-label">{{ form.message.label }}</label>
+      <span class="contact-required">(Required)</span>
+      <br />
+      <small class="contact-help-text"
+        >Please enter the message you would like to send.</small
+      >
+      {{ form.message(class="contact-form-input", rows=5) }}
+    </div>
+
+    <button type="submit" class="contact-form-btn">Send</button>
+  </form>
+</div>
+{% endblock %}
